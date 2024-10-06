@@ -1,3 +1,4 @@
+// src/router/module/dashboard.js
 export default [
     {
       path: '/dashboard',

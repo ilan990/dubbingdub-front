@@ -1,4 +1,4 @@
-// src/modules/auth.js
+// src/router/modules/auth.js
 import store from '@/store'
 export default [
     {
@@ -15,19 +15,5 @@ export default [
           next({ name: 'LoginPage' })
         }
       },
-    // {
-    //   path: '/register',
-    //   name: 'Register',
-    //   component: () => import('@/views/auth/Register.vue')
-    // },
-    // {
-    //   path: '/forgot-password',
-    //   name: 'ForgotPassword',
-    //   component: () => import('@/views/auth/ForgotPassword.vue')
-    // },
-    // {
-    //   path: '/reset-password',
-    //   name: 'ResetPassword',
-    //   component: () => import('@/views/auth/ResetPassword.vue')
-    // }
+    
   ]
