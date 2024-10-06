@@ -1,6 +1,8 @@
 // src/store/auth.js
 import axios from 'axios'
 import { API_BASE_URL } from '../config/api'
+import router from '../router'
+import apiService from '../services/api'
 
 let tokenCheckInterval = null
 
@@ -61,18 +63,27 @@ export default {
             })
         })
       },
-    logout({ commit }) {
-      return new Promise((resolve) => {
-        commit('logout')
-        localStorage.removeItem('token')
-        delete axios.defaults.headers.common['Authorization']
-        if (tokenCheckInterval) {
-          clearInterval(tokenCheckInterval)
-          tokenCheckInterval = null
-        }
-        resolve()
-      })
-    },
+      logout({ commit }) {
+        return new Promise((resolve) => {
+          apiService.post('/auth/logout')
+            .then(() => {
+              commit('logout')
+              localStorage.removeItem('token')
+              delete apiService.defaults.headers.common['Authorization']
+              router.push({ name: 'Login' })
+              resolve()
+            })
+            .catch((error) => {
+              console.error('Erreur lors de la déconnexion:', error)
+              // Même en cas d'erreur, on déconnecte localement
+              commit('logout')
+              localStorage.removeItem('token')
+              delete apiService.defaults.headers.common['Authorization']
+              router.push({ name: 'Login' })
+              resolve()
+            })
+        })
+      },
     checkAuth({ commit, dispatch }) {
         return new Promise((resolve) => {  // Supprimé 'reject' ici
           const token = localStorage.getItem('token')
