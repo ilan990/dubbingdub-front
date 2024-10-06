@@ -1,3 +1,4 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 
@@ -29,12 +30,19 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters['auth/isLoggedIn']) {
+    try {
+      // Vérifier l'authentification avant d'accéder à une route protégée
+      const isAuthenticated = await store.dispatch('auth/checkAuth')
+      if (!isAuthenticated) {
+        next({ name: 'LoginPage', query: { redirect: to.fullPath } })
+      } else {
+        next()
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification de l\'authentification:', error)
       next({ name: 'LoginPage', query: { redirect: to.fullPath } })
-    } else {
-      next()
     }
   } else {
     next()
