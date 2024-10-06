@@ -1,5 +1,6 @@
 // src/store/auth.js
 import axios from 'axios'
+import { API_BASE_URL } from '../config/api'
 
 let tokenCheckInterval = null
 
@@ -35,7 +36,7 @@ export default {
         return new Promise((resolve, reject) => {
           commit('auth_request')
           console.log('Tentative de connexion avec:', user)
-          axios.post('http://localhost:3000/api/auth/login', user)
+          axios.post(`${API_BASE_URL}/auth/login`, user)
             .then(resp => {
               console.log('Réponse du serveur:', resp.data)
               if (resp.data.token) {
@@ -76,7 +77,7 @@ export default {
         return new Promise((resolve) => {  // Supprimé 'reject' ici
           const token = localStorage.getItem('token')
           if (token) {
-            axios.get('http://localhost:3000/api/auth/verify', {
+            axios.get(`${API_BASE_URL}/auth/verify`, {
               headers: { 'Authorization': `Bearer ${token}` }
             })
               .then(response => {

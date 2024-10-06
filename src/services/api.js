@@ -1,11 +1,10 @@
 // src/services/api.js
 import axios from 'axios'
-
-const API_URL = 'http://localhost:3000/api'
+import { API_BASE_URL } from '../config/api'
 
 const apiService = {
   init() {
-    axios.defaults.baseURL = API_URL
+    axios.defaults.baseURL = API_BASE_URL
     axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
   },
 
