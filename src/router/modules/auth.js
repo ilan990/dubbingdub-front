@@ -1,3 +1,4 @@
+// src/modules/auth.js
 export default [
     {
       path: '/login',
